@@ -23,16 +23,7 @@ Admin panel: http://127.0.0.1:8000/admin/
 - `/bill/<id>/` - View a generated bill
 - `/history/` - View all past purchases
 
-## Async Email (optional)
 
-By default emails are printed to the terminal. To enable background email sending, start Redis and a Celery worker:
-
-```bash
-redis-server
-celery -A billing_system worker --loglevel=info
-```
-
-If Redis is not running, the app still works fine — email is just skipped silently.
 
 ## Assumptions
 
