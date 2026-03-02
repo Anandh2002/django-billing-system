@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice #{{ purchase.id }}</title>
+</head>
+<body style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+
+<h3>Invoice #{{ purchase.id }}</h3>
+<p>Customer: {{ purchase.customer_email }}</p>
+<p>Date: {{ purchase.created_at|date:"d M Y" }}</p>
+
+<table border="1" cellpadding="7" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+    <tr style="background: #f0f0f0;">
+        <th>Product ID</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Tax %</th>
+        <th>Tax Amount</th>
+        <th>Total</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.product.product_id }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.unit_price|floatformat:2 }}</td>
+        <td>{{ item.tax_percentage|floatformat:2 }}%</td>
+        <td>{{ item.get_tax_amount|floatformat:2 }}</td>
+        <td>{{ item.get_line_total|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<table style="width: 40%; margin-left: auto;">
+    <tr>
+        <td>Total (excl. tax)</td>
+        <td>{{ purchase.total_without_tax|floatformat:2 }}</td>
+    </tr>
+    <tr>
+        <td>Total tax</td>
+        <td>{{ purchase.total_tax|floatformat:2 }}</td>
+    </tr>
+    <tr>
+        <td><strong>Net price</strong></td>
+        <td><strong>{{ purchase.net_price|floatformat:2 }}</strong></td>
+    </tr>
+    <tr>
+        <td>Cash paid</td>
+        <td>{{ purchase.cash_paid|floatformat:2 }}</td>
+    </tr>
+    <tr>
+        <td>Balance returned</td>
+        <td>{{ purchase.balance|floatformat:2 }}</td>
+    </tr>
+</table>
+
+<p style="margin-top: 20px; font-size: 12px; color: #888;">Thank you for shopping with us!</p>
+
+</body>
+</html>

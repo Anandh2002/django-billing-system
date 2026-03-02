@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Billing{% endblock %}</title>
+</head>
+<body>
+
+<a href="{% url 'billing_page' %}">New Bill</a> |
+<a href="{% url 'purchase_history' %}">History</a> |
+<a href="/admin/">Admin</a>
+
+<hr>
+
+{% for msg in messages %}
+    <p style="color: red;">{{ msg }}</p>
+{% endfor %}
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

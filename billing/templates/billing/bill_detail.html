@@ -1,0 +1,64 @@
+{% extends "billing/base.html" %}
+{% block title %}Bill #{{ purchase.id }}{% endblock %}
+
+{% block content %}
+<h2>Billing Page</h2>
+
+<p><strong>Customer Email:</strong> {{ purchase.customer_email }}</p>
+
+<p><strong>Bill section</strong></p>
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Purchase Price</th>
+            <th>Tax % for item</th>
+            <th>Tax payable for item</th>
+            <th>Total price of the item</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.product_id }}</td>
+            <td>{{ item.unit_price|floatformat:2 }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.get_line_total_before_tax|floatformat:2 }}</td>
+            <td>{{ item.tax_percentage|floatformat:2 }}%</td>
+            <td>{{ item.get_tax_amount|floatformat:2 }}</td>
+            <td>{{ item.get_line_total|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<table border="1" cellpadding="5">
+    <tr><td>Total price without tax</td><td>{{ purchase.total_without_tax|floatformat:2 }}</td></tr>
+    <tr><td>Total tax payable</td><td>{{ purchase.total_tax|floatformat:2 }}</td></tr>
+    <tr><td>Net price of the purchased item</td><td>{{ purchase.net_price|floatformat:2 }}</td></tr>
+    <tr><td>Rounded down value of the purchased items net price</td><td>{{ purchase.rounded_net_price|floatformat:2 }}</td></tr>
+    <tr><td>Balance payable to the customer</td><td>{{ purchase.balance|floatformat:2 }}</td></tr>
+</table>
+
+<hr>
+
+{% if purchase.denom_returned %}
+<p><strong>Balance Denomination:</strong></p>
+<table border="1" cellpadding="5">
+    {% for denom, count in purchase.denom_returned.items %}
+    <tr>
+        <td>{{ denom }}</td>
+        <td>{{ count }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<br>
+<a href="{% url 'billing_page' %}">New Bill</a> |
+<a href="{% url 'purchase_history' %}">View History</a>
+
+{% endblock %}

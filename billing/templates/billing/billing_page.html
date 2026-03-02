@@ -1,0 +1,62 @@
+{% extends "billing/base.html" %}
+{% block title %}Billing Page{% endblock %}
+
+{% block content %}
+<h2>Billing Page</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<p>
+    <label>Customer Email:</label>
+    <input type="email" name="customer_email" value="{{ post_data.customer_email|default:'' }}" required>
+</p>
+
+<p>
+    <button type="button" onclick="addRow()">Add New</button>
+</p>
+
+<p><strong>Bill section</strong></p>
+<div id="product-rows">
+    <div>
+        <input type="text" name="product_id" placeholder="Product ID">
+        <input type="number" name="quantity" placeholder="Quantity" min="1">
+    </div>
+</div>
+
+<hr>
+
+<p><strong>Denominations</strong></p>
+{% for d in denominations %}
+<p>
+    <label>{{ d }}</label>
+    <input type="number" name="denom_{{ d }}" placeholder="Count" min="0">
+</p>
+{% endfor %}
+
+<hr>
+
+<p>
+    <label>Cash paid by customer:</label>
+    <input type="number" name="cash_paid" placeholder="Amount" min="0" step="0.01" value="{{ post_data.cash_paid|default:'' }}">
+</p>
+
+<p>
+    <a href="{% url 'billing_page' %}">Cancel</a>
+    <button type="submit">Generate Bill</button>
+</p>
+
+</form>
+
+<script>
+function addRow() {
+    var container = document.getElementById('product-rows');
+    var div = document.createElement('div');
+    div.innerHTML = '<input type="text" name="product_id" placeholder="Product ID"> '
+                  + '<input type="number" name="quantity" placeholder="Quantity" min="1"> '
+                  + '<button type="button" onclick="this.parentNode.remove()">Remove</button>';
+    container.appendChild(div);
+}
+</script>
+
+{% endblock %}
