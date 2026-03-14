@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>Product ID</th>
+            <th>Product Name</th>
             <th>Unit Price</th>
             <th>Quantity</th>
             <th>Purchase Price</th>
@@ -23,6 +24,7 @@
         {% for item in items %}
         <tr>
             <td>{{ item.product.product_id }}</td>
+            <td>{{ item.product.name }}</td>
             <td>{{ item.unit_price|floatformat:2 }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.get_line_total_before_tax|floatformat:2 }}</td>
